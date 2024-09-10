@@ -95,8 +95,17 @@ typedef enum
 /** 
   * @brief  Define for STM32746G_DISCOVERY board
   */ 
+/**
 #if !defined (USE_STM32746G_DISCO)
  #define USE_STM32746G_DISCO
+#endif
+*/
+/**
+* trying a solution to fix the screen erros on my board posted to the st.com community forum at
+* https://community.st.com/t5/stm32-mcus-touchgfx-and-gui/stm32f746g-discovery-what-is-the-difference-between-cu2-and-cu4/m-p/711279
+*/
+#if !defined (USE_STM32746G_DISCO_REVC03)
+ #define  USE_STM32746G_DISCO_REVC03
 #endif
 
 /** @addtogroup STM32746G_DISCOVERY_LOW_LEVEL_LED
