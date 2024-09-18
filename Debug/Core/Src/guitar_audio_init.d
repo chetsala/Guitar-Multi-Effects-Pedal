@@ -1,4 +1,10 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/guitar_audio_init.o: ../Core/Src/guitar_audio_init.c \
+ ../Core/Inc/guitar_audio_init.h \
+ ../Drivers/BSP/Components/wm8994/wm8994.h \
+ ../Drivers/BSP/Components/wm8994/../Common/audio.h \
+ ../Drivers/BSP/Inc/stm32746g_discovery_audio.h \
+ ../Drivers/BSP/Inc/../Components/wm8994/wm8994.h \
+ ../Drivers/BSP/Inc/stm32746g_discovery.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -29,16 +35,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sai.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_spi.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_spi_ex.h \
- ../Drivers/BSP/Components/wm8994/wm8994.h \
- ../Drivers/BSP/Components/wm8994/../Common/audio.h \
- ../Drivers/BSP/Inc/stm32746g_discovery_audio.h \
- ../Drivers/BSP/Inc/../Components/wm8994/wm8994.h \
- ../Drivers/BSP/Inc/stm32746g_discovery.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- ../Core/Inc/guitar_audio_init.h
-../Core/Inc/main.h:
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
+../Core/Inc/guitar_audio_init.h:
+../Drivers/BSP/Components/wm8994/wm8994.h:
+../Drivers/BSP/Components/wm8994/../Common/audio.h:
+../Drivers/BSP/Inc/stm32746g_discovery_audio.h:
+../Drivers/BSP/Inc/../Components/wm8994/wm8994.h:
+../Drivers/BSP/Inc/stm32746g_discovery.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
@@ -69,12 +74,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sai.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_spi.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_spi_ex.h:
-../Drivers/BSP/Components/wm8994/wm8994.h:
-../Drivers/BSP/Components/wm8994/../Common/audio.h:
-../Drivers/BSP/Inc/stm32746g_discovery_audio.h:
-../Drivers/BSP/Inc/../Components/wm8994/wm8994.h:
-../Drivers/BSP/Inc/stm32746g_discovery.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-../Core/Inc/guitar_audio_init.h:

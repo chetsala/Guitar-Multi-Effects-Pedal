@@ -24,6 +24,9 @@
 #include "wm8994.h"
 #include "stm32746g_discovery_audio.h"
 #include "stm32f7xx_hal_i2s.h"
+#include "guitar_audio_init.h"
+
+
 
 
 /* USER CODE END Includes */
@@ -43,9 +46,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-/* Audio buffers */
-float INT16_TO_FLOAT = 1.0f / 32768.0f;
-int16_t FLOAT_TO_INT16 = 32767.0f;
 
 
 /* USER CODE END PM */
@@ -53,25 +53,20 @@ int16_t FLOAT_TO_INT16 = 32767.0f;
 /* Private variables ---------------------------------------------------------*/
 
 I2C_HandleTypeDef hi2c2;
+I2C_HandleTypeDef hi2c3;
 
 I2S_HandleTypeDef hi2s1;
 I2S_HandleTypeDef hi2s3;
-DMA_HandleTypeDef hdma_spi1_rx;
-DMA_HandleTypeDef hdma_spi3_tx;
 
 SAI_HandleTypeDef hsai_BlockA2;
 SAI_HandleTypeDef hsai_BlockB2;
+DMA_HandleTypeDef hdma_sai2_a;
+DMA_HandleTypeDef hdma_sai2_b;
 
 SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
-int16_t adcData[BUFFER_SIZE];
-int16_t dacData[BUFFER_SIZE];
 
-static volatile int16_t *inBufPtr;
-static volatile int16_t *outBufPtr = &dacData[0];
-
-uint8_t dataReadyFlag;
 
 /* USER CODE END PV */
 
@@ -85,69 +80,13 @@ static void MX_SAI2_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_I2S1_Init(void);
+static void MX_I2C3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_I2SEx_TxRxHalfCpltCallback(I2S_HandleTypeDef *hi2s){
-	inBufPtr = &adcData[0];
-	outBufPtr = &dacData[0];
-	// Can process front half of ADC data and store in front half of DAC data
-	dataReadyFlag = 1;
-}
-
-void HAL_I2SEx_TxRxCpltCallback(I2S_HandleTypeDef *hi2s){
-	inBufPtr = &adcData[BUFFER_SIZE/2];
-	outBufPtr = &dacData[BUFFER_SIZE/2];
-
-	dataReadyFlag = 1;
-}
-
-void processData(){
-
-	static float leftIn, leftOut;
-	static float rightIn, rightOut;
-
-	for (uint8_t n = 0; n < (BUFFER_SIZE/2) - 1; n += 2){
-
-		/*
-		 * Left channel
-		 */
-
-		/* Get ADC input and convert to float*/
-		leftIn = INT16_TO_FLOAT * inBufPtr[n];
-		if (leftIn > 1.0f){
-			leftIn -= 2.0f;
-		}
-
-		/* Compute new output sample */
-
-		leftOut = leftIn;
-
-		/* Convert back to signed int and set DAC output */
-		outBufPtr[n] = (int16_t)(FLOAT_TO_INT16 * leftOut);
-
-		/*
-		 * Right channel
-		 */
-
-		/* Get ADC input and convert to float*/
-		rightIn = INT16_TO_FLOAT = inBufPtr[n+1];
-		if (rightIn > 1.0f){
-			rightIn -= 2.0f;
-		}
-
-		rightOut = rightIn;
-
-		// Convert back to signed int and set DAC output
-		outBufPtr[n+1] = (int16_t)(FLOAT_TO_INT16 * rightOut);
-	}
-
-	dataReadyFlag = 0;
-}
-
 
 
 
@@ -192,11 +131,10 @@ int main(void)
   MX_SPI2_Init();
   MX_I2S3_Init();
   MX_I2S1_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
 
-  // Start the DMA steams
- HAL_StatusTypeDef adc_status =  HAL_I2S_Receive_DMA(&hi2s1,(uint16_t *) adcData, BUFFER_SIZE);
- HAL_StatusTypeDef dac_status = HAL_I2S_Transmit_DMA(&hi2s3, (uint16_t *) dacData, BUFFER_SIZE);
+
 
 
   //BSP_AUDIO_IN_OUT_Init(INPUT_DEVICE_INPUT_LINE_1, OUTPUT_DEVICE_HEADPHONE,DEFAULT_AUDIO_IN_VOLUME , DEFAULT_AUDIO_IN_FREQ);
@@ -208,11 +146,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if (dataReadyFlag){
 
-		  processData();
-
-	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -349,6 +283,54 @@ static void MX_I2C2_Init(void)
 }
 
 /**
+  * @brief I2C3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C3_Init(void)
+{
+
+  /* USER CODE BEGIN I2C3_Init 0 */
+
+  /* USER CODE END I2C3_Init 0 */
+
+  /* USER CODE BEGIN I2C3_Init 1 */
+
+  /* USER CODE END I2C3_Init 1 */
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x00C0EAFF;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C3_Init 2 */
+
+  /* USER CODE END I2C3_Init 2 */
+
+}
+
+/**
   * @brief I2S1 Initialization Function
   * @param None
   * @retval None
@@ -430,7 +412,7 @@ static void MX_SAI2_Init(void)
 
   /* USER CODE END SAI2_Init 1 */
   hsai_BlockA2.Instance = SAI2_Block_A;
-  hsai_BlockA2.Init.AudioMode = SAI_MODEMASTER_TX;
+  hsai_BlockA2.Init.AudioMode = SAI_MODEMASTER_RX;
   hsai_BlockA2.Init.Synchro = SAI_ASYNCHRONOUS;
   hsai_BlockA2.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
   hsai_BlockA2.Init.NoDivider = SAI_MASTERDIVIDER_ENABLE;
@@ -439,7 +421,6 @@ static void MX_SAI2_Init(void)
   hsai_BlockA2.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
   hsai_BlockA2.Init.MonoStereoMode = SAI_STEREOMODE;
   hsai_BlockA2.Init.CompandingMode = SAI_NOCOMPANDING;
-  hsai_BlockA2.Init.TriState = SAI_OUTPUT_NOTRELEASED;
   if (HAL_SAI_InitProtocol(&hsai_BlockA2, SAI_I2S_STANDARD, SAI_PROTOCOL_DATASIZE_16BIT, 2) != HAL_OK)
   {
     Error_Handler();
@@ -450,7 +431,7 @@ static void MX_SAI2_Init(void)
   hsai_BlockB2.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
   hsai_BlockB2.Init.NoDivider = SAI_MASTERDIVIDER_ENABLE;
   hsai_BlockB2.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_EMPTY;
-  hsai_BlockB2.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_192K;
+  hsai_BlockB2.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_48K;
   hsai_BlockB2.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
   hsai_BlockB2.Init.MonoStereoMode = SAI_STEREOMODE;
   hsai_BlockB2.Init.CompandingMode = SAI_NOCOMPANDING;
@@ -512,16 +493,15 @@ static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
   __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
-  /* DMA1_Stream5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
-  /* DMA2_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+  /* DMA2_Stream4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream4_IRQn);
+  /* DMA2_Stream6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
 
 }
 
@@ -952,14 +932,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(ARDUINO_A0_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : LCD_SCL_Pin LCD_SDA_Pin */
-  GPIO_InitStruct.Pin = LCD_SCL_Pin|LCD_SDA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
-  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA6 */
   GPIO_InitStruct.Pin = GPIO_PIN_6;
