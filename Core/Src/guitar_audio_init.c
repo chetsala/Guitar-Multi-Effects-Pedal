@@ -8,6 +8,7 @@
 #include "guitar_audio_init.h"
 #include "wm8994.h"
 #include "audio_buffers.h"
+#include "stm32746g_discovery_lcd.h"
 
 
 #define WM8994_I2C_ADDRESS 0x34  // I2C address for WM8994 codec
@@ -15,6 +16,8 @@
 #define INT16_TO_FLOAT(x)  ((float)(x) / 32768.0f)
 #define FLOAT_TO_INT16(x)  ((x) >= 1.0f ? 32767 : ((x) <= -1.0f ? -32768 : (int16_t)((x) * 32768.0f)))
 
+
+uint8_t is_codec_initialized = AUDIO_ERROR;
 
 
 // Use CubeMX-generated handles
@@ -31,6 +34,7 @@ void Audio_Stop(void);
 void HAL_SAI_TxRxHalfCpltCallback(SAI_HandleTypeDef *hsai);
 void HAL_SAI_TxRxCpltCallback(SAI_HandleTypeDef *hsai);
 void processData();
+void Display_Info(uint8_t *info, uint8_t indent, uint32_t color); // used for debugging
 
 /*
  * HAL_StatusTypeDef HAL_SAI_Transmit_DMA(SAI_HandleTypeDef *hsai, uint8_t *pData, uint16_t Size);
@@ -45,15 +49,38 @@ void Audio_Init(void)
  * sai2 a -- receive
 sai2 b -- transmit
  */
+// Codec and SAI Initialization
 
-	wm8994_Init(AUDIO_I2C_ADDRESS, INPUT_DEVICE_INPUT_LINE_1 || OUTPUT_DEVICE_HEADPHONE, DEFAULT_VOL_70_PERCENT, AUDIO_FREQUENCY_48K);
+
+	// uint8_t BSP_AUDIO_IN_OUT_Init(uint16_t InputDevice, uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq)
+
+	if (BSP_AUDIO_IN_OUT_Init(INPUT_DEVICE_INPUT_LINE_1, OUTPUT_DEVICE_HEADPHONE,DEFAULT_VOL_70_PERCENT, I2S_AUDIOFREQ_48K) == AUDIO_OK)
+	{
+		BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+		BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+
+	}
+	else
+	{
+		sprintf(current_info_text, "Codec Error. Reset Device");
+		Display_Info((uint8_t *)current_info_text, 10, LCD_COLOR_RED);
+
+	}
+
+	is_codec_initialized = AUDIO_OK;
+	memset((uint16_t*)AUDIO_BUFFER_IN, 0, AUDIO_BLOCK_SIZE*2);
+	memset((uint16_t*)AUDIO_BUFFER_OUT, 0, AUDIO_BLOCK_SIZE*4);
+
+	/* Initialize input and output sample buffers */
+
 
 
 }
 
-
+// Start audio playback and capture using DMA
 void Audio_Play(void)
 {
+
 
 
 
@@ -126,6 +153,15 @@ void processData(){ // fn gets called whenever dataReadyFlag = 1
 
 }
 
+void Display_Info(uint8_t *info, uint8_t indent, uint32_t color)
+{
+	BSP_LCD_SetFont(&Font12);
+	BSP_LCD_SetTextColor(LCD_COLOR_BROWN);
+	BSP_LCD_FillRect(INFO_XPOS, INFO_YPOS, INFO_WIDTH, INFO_HEIGHT);
+	BSP_LCD_SetBackColor(LCD_COLOR_BROWN);
+	BSP_LCD_SetTextColor(color);
+	BSP_LCD_DisplayStringAt(INFO_XPOS+indent, INFO_YPOS+(INFO_HEIGHT/3) +3, (uint8_t *)info, LEFT_MODE);
+}
 
 
 

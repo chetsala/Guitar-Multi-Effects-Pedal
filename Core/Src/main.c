@@ -53,6 +53,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+DMA2D_HandleTypeDef hdma2d;
+
 I2C_HandleTypeDef hi2c2;
 I2C_HandleTypeDef hi2c3;
 
@@ -68,12 +70,12 @@ SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
 
+// Buffers
 int16_t adcData[BUFFER_SIZE];
 int16_t dacData[BUFFER_SIZE];
-uint8_t dataReadyFlag;
-
-int16_t volatile *inBufPtr;
-int16_t volatile *outBufPtr = &dacData[0];
+uint8_t dataReadyFlag = 0;
+volatile int16_t   *inBufPtr;
+volatile int16_t   *outBufPtr = &dacData[0];
 
 
 /* USER CODE END PV */
@@ -89,12 +91,22 @@ static void MX_SPI2_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_I2S1_Init(void);
 static void MX_I2C3_Init(void);
+static void MX_DMA2D_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+
+/* Variables to be used during operation and initialization of LCD display and touch panel  */
+
+char xTouchStr[10];
+uint16_t x, y;
+uint8_t current_window;
+char current_volume_main[5];
+char current_info_text[40];
 
 
 
@@ -140,11 +152,12 @@ int main(void)
   MX_I2S3_Init();
   MX_I2S1_Init();
   MX_I2C3_Init();
+  MX_DMA2D_Init();
   /* USER CODE BEGIN 2 */
 
   Audio_Init();
+  Audio_Play();
 
-  HAL_StatusTypeDef statustx = HAL_SAI_Transmit_DMA(&hsai_BlockB2, (uint8_t *) dacData, BUFFER_SIZE * 2);
 
 
 
@@ -155,14 +168,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (dataReadyFlag){
-		  processData();
+
 
 	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+
   /* USER CODE END 3 */
 }
 
@@ -246,6 +258,43 @@ void PeriphCommonClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief DMA2D Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_DMA2D_Init(void)
+{
+
+  /* USER CODE BEGIN DMA2D_Init 0 */
+
+  /* USER CODE END DMA2D_Init 0 */
+
+  /* USER CODE BEGIN DMA2D_Init 1 */
+
+  /* USER CODE END DMA2D_Init 1 */
+  hdma2d.Instance = DMA2D;
+  hdma2d.Init.Mode = DMA2D_M2M;
+  hdma2d.Init.ColorMode = DMA2D_OUTPUT_ARGB8888;
+  hdma2d.Init.OutputOffset = 0;
+  hdma2d.LayerCfg[1].InputOffset = 0;
+  hdma2d.LayerCfg[1].InputColorMode = DMA2D_INPUT_ARGB8888;
+  hdma2d.LayerCfg[1].AlphaMode = DMA2D_NO_MODIF_ALPHA;
+  hdma2d.LayerCfg[1].InputAlpha = 0;
+  if (HAL_DMA2D_Init(&hdma2d) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_DMA2D_ConfigLayer(&hdma2d, 1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN DMA2D_Init 2 */
+
+  /* USER CODE END DMA2D_Init 2 */
+
 }
 
 /**

@@ -335,6 +335,18 @@ void Error_Handler(void);
 #define CODEC_OUT_VOLUME 80 // at 80 no noise in headphone
 #define CODEC_IN_VOLUME	 92
 
+#define RGB565_BYTE_PER_PIXEL     2
+#define ARBG8888_BYTE_PER_PIXEL   4
+//LCD Resolution
+#define CAMERA_RES_MAX_X          640
+#define CAMERA_RES_MAX_Y          480
+
+
+#define LCD_FRAME_BUFFER          SDRAM_DEVICE_ADDR
+#define CAMERA_FRAME_BUFFER       ((uint32_t)(LCD_FRAME_BUFFER + (RK043FN48H_WIDTH * RK043FN48H_HEIGHT * ARBG8888_BYTE_PER_PIXEL)))
+#define SDRAM_WRITE_READ_ADDR        ((uint32_t)(CAMERA_FRAME_BUFFER + (CAMERA_RES_MAX_X * CAMERA_RES_MAX_Y * RGB565_BYTE_PER_PIXEL)))
+
+
 
 
 
