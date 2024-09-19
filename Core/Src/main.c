@@ -25,6 +25,7 @@
 #include "stm32746g_discovery_audio.h"
 #include "stm32f7xx_hal_i2s.h"
 #include "guitar_audio_init.h"
+#include "audio_buffers.h"
 
 
 
@@ -38,7 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BUFFER_SIZE 120
+
 
 
 
@@ -66,6 +67,13 @@ DMA_HandleTypeDef hdma_sai2_b;
 SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
+
+int16_t adcData[BUFFER_SIZE];
+int16_t dacData[BUFFER_SIZE];
+uint8_t dataReadyFlag;
+
+int16_t volatile *inBufPtr;
+int16_t volatile *outBufPtr = &dacData[0];
 
 
 /* USER CODE END PV */
@@ -134,10 +142,12 @@ int main(void)
   MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
 
+  Audio_Init();
+
+  HAL_StatusTypeDef statustx = HAL_SAI_Transmit_DMA(&hsai_BlockB2, (uint8_t *) dacData, BUFFER_SIZE * 2);
 
 
 
-  //BSP_AUDIO_IN_OUT_Init(INPUT_DEVICE_INPUT_LINE_1, OUTPUT_DEVICE_HEADPHONE,DEFAULT_AUDIO_IN_VOLUME , DEFAULT_AUDIO_IN_FREQ);
 
   /* USER CODE END 2 */
 
@@ -145,6 +155,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (dataReadyFlag){
+		  processData();
+
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

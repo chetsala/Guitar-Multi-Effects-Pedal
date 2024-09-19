@@ -37,7 +37,8 @@ Core/Src/guitar_audio_init.o: ../Core/Src/guitar_audio_init.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_spi_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
+ ../Core/Inc/audio_buffers.h
 ../Core/Inc/guitar_audio_init.h:
 ../Drivers/BSP/Components/wm8994/wm8994.h:
 ../Drivers/BSP/Components/wm8994/../Common/audio.h:
@@ -77,3 +78,4 @@ Core/Src/guitar_audio_init.o: ../Core/Src/guitar_audio_init.c \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
+../Core/Inc/audio_buffers.h:
