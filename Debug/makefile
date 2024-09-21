@@ -12,7 +12,8 @@ RM := rm -rf
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Drivers/BSP/Src/subdir.mk
 -include Drivers/BSP/Components/wm8994/subdir.mk
--include Drivers/subdir.mk
+-include Drivers/BSP/Components/ov9655/subdir.mk
+-include Drivers/BSP/Components/ft5336/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -63,8 +64,8 @@ all: main-build
 main-build: Guitar-Multi-Effects-Pedal.elf secondary-outputs
 
 # Tool invocations
-Guitar-Multi-Effects-Pedal.elf Guitar-Multi-Effects-Pedal.map: $(OBJS) $(USER_OBJS) C:\Users\chets\OneDrive\ -\ aquacal.com\Desktop\Tone\ Engineers\Guitar-Multi-Effects-Pedal\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Guitar-Multi-Effects-Pedal.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\chets\OneDrive - aquacal.com\Desktop\Tone Engineers\Guitar-Multi-Effects-Pedal\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Guitar-Multi-Effects-Pedal.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Guitar-Multi-Effects-Pedal.elf Guitar-Multi-Effects-Pedal.map: $(OBJS) $(USER_OBJS) C:\Users\Chet\Desktop\Guitar_Multi_Effects_Pedal\Guitar-Multi-Effects-Pedal\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Guitar-Multi-Effects-Pedal.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Chet\Desktop\Guitar_Multi_Effects_Pedal\Guitar-Multi-Effects-Pedal\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Guitar-Multi-Effects-Pedal.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

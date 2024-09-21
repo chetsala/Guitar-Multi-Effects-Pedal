@@ -1,6 +1,1 @@
-../Core/Src/guitar_audio_init.c:45:6:Audio_Init	2
-../Core/Src/guitar_audio_init.c:77:6:Audio_Play	1
-../Core/Src/guitar_audio_init.c:86:6:HAL_SAI_TxRxHalfCpltCallback	1
-../Core/Src/guitar_audio_init.c:94:6:HAL_SAI_TxRxCpltCallback	1
-../Core/Src/guitar_audio_init.c:103:6:processData	8
-../Core/Src/guitar_audio_init.c:152:6:Display_Info	1
+../Core/Src/guitar_audio_init.c:22:6:Audio_Init	5

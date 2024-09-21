@@ -13,6 +13,24 @@
 #include "stm32f7xx_hal_sai.h"
 #include <stdio.h>
 #include "main.h"
+#include <string.h>
+#include <stdint.h>
+
+
+//Type Def
+typedef enum {
+  AUDIO_ERROR_NONE = 0,
+  AUDIO_ERROR_NOTREADY,
+  AUDIO_ERROR_IO,
+  AUDIO_ERROR_EOF,
+}AUDIO_ErrorTypeDef;
+
+typedef enum
+{
+  BUFFER_OFFSET_NONE = 0,
+  BUFFER_OFFSET_HALF = 1,
+  BUFFER_OFFSET_FULL = 2,
+}BUFFER_StateTypeDef;
 
 
 /*
@@ -20,35 +38,24 @@
  */
 
 
-#define AUDIO_BLOCK_SIZE             ((uint32_t)512)
-#define AUDIO_BLOCK_HALFSIZE         ((uint32_t)256)
-#define AUDIO_I2C_ADDRESS			 ((uint16_t)0x34)
-#define DEFAULT_VOL_70_PERCENT        0xB3
+#define AUDIO_NB_BLOCKS    			((uint32_t)4)
 
-// Sizes of the data block, sample buffer, and buffer address
-#define AUDIO_BUFFER_SIZE ((uint32_t)45056)
-#define AUDIO_BUFFER_IN    AUDIO_REC_START_ADDR     /* In SDRAM */
-#define AUDIO_BUFFER_OUT   (AUDIO_REC_START_ADDR + (AUDIO_BLOCK_SIZE * 2)) /* In SDRAM */
-#define AUDIO_REC_START_ADDR         SDRAM_WRITE_READ_ADDR
 
-#define INFO_HEIGHT 20
-#define INFO_XPOS 0
-#define INFO_YPOS 0
-#define INFO_WIDTH 480
 
-/*
- * Variables
- */
+/* Private variables ---------------------------------------------------------*/
 
-extern char current_info_text[40];
+
+
+/* Global variables ---------------------------------------------------------*/
+extern uint32_t  audio_rec_buffer_state;
+
 
 
 /*------------------------------------------------------------------------------
                            Audio functions
 ------------------------------------------------------------------------------*/
 
-void My_Audio_Init(void);
-
+void Audio_Init(void);
 
 
 

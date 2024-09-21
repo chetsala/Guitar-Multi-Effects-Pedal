@@ -24,8 +24,9 @@ C_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
+Drivers/BSP/Components/ft5336 \
+Drivers/BSP/Components/ov9655 \
 Drivers/BSP/Components/wm8994 \
 Drivers/BSP/Src \
 Drivers/STM32F7xx_HAL_Driver/Src \
-Drivers \
 

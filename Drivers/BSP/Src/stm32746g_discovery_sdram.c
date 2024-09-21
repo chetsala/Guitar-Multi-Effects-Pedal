@@ -69,6 +69,7 @@ EndDependencies */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32746g_discovery_sdram.h"
+#include "stm32f7xx_hal_sdram.h"
 
 /** @addtogroup BSP
   * @{

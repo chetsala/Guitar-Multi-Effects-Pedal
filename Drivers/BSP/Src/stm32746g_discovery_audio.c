@@ -95,6 +95,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32746g_discovery_audio.h"
 #include "stm32f7xx_hal_tim.h"
+#include "main.h"
+
 
 /** @addtogroup BSP
   * @{
@@ -503,6 +505,8 @@ void HAL_SAI_ErrorCallback(SAI_HandleTypeDef *hsai)
   */
 __weak void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
+	// AUDIO PROCESSING SENT THROUGH HERE
+
 }
 
 /**
@@ -511,6 +515,8 @@ __weak void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
   */
 __weak void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 { 
+
+	// AUDIO PROCESSING SENT THROUGH HERE
 }
 
 /**
@@ -1079,6 +1085,10 @@ __weak void BSP_AUDIO_IN_TransferComplete_CallBack(void)
   /* This function should be implemented by the user application.
      It is called into this driver when the current buffer is filled
      to prepare the next buffer pointer and its size. */
+
+	// Copy the second half of audioInputBuffer to audioOutputBuffer
+
+
 }
 
 /**
@@ -1090,6 +1100,10 @@ __weak void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
   /* This function should be implemented by the user application.
      It is called into this driver when the current buffer is filled
      to prepare the next buffer pointer and its size. */
+
+	// Copy the first half of audioInputBuffer to audioOutputBuffer
+
+
 }
 
 /**

@@ -77,6 +77,8 @@ EndDependencies */
 #include "font16.c"
 #include "font12.c"
 #include "font8.c"
+#include "stm32f7xx_hal_ltdc.h"
+
 
 /** @addtogroup BSP
   * @{
@@ -290,7 +292,7 @@ void BSP_LCD_LayerDefaultInit(uint16_t LayerIndex, uint32_t FB_Address)
   layer_cfg.ImageWidth = BSP_LCD_GetXSize();
   layer_cfg.ImageHeight = BSP_LCD_GetYSize();
   
-  HAL_LTDC_ConfigLayer(&hLtdcHandler, &layer_cfg, LayerIndex); 
+  HAL_LTDC_ConfigLayer(&hLtdcHandler, &layer_cfg, LayerIndex);
 
   DrawProp[LayerIndex].BackColor = LCD_COLOR_WHITE;
   DrawProp[LayerIndex].pFont     = &Font24;

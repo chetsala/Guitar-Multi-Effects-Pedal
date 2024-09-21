@@ -72,7 +72,7 @@
 /******************************************************************************/
 /* Codec output DEVICE */
 #define OUTPUT_DEVICE_SPEAKER                 ((uint16_t)0x0001)
-#define OUTPUT_DEVICE_HEADPHONE               ((uint16_t)0x0002)
+#define OUTPUT_DEVICE_HEADPHONE              ((uint16_t)0x0002)
 #define OUTPUT_DEVICE_BOTH                    ((uint16_t)0x0003)
 #define OUTPUT_DEVICE_AUTO                    ((uint16_t)0x0004)
 #define INPUT_DEVICE_DIGITAL_MICROPHONE_1     ((uint16_t)0x0100)
