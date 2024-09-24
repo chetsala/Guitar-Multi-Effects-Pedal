@@ -1,0 +1,15 @@
+../myDrivers/Src/stm32746g_discovery_qspi.c:113:9:BSP_QSPI_Init	16	static,ignoring_inline_asm
+../myDrivers/Src/stm32746g_discovery_qspi.c:165:9:BSP_QSPI_DeInit	8	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:188:9:BSP_QSPI_Read	80	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:242:9:BSP_QSPI_Write	96	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:329:9:BSP_QSPI_Erase_Block	72	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:382:9:BSP_QSPI_Erase_Chip	64	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:433:9:BSP_QSPI_GetStatus	72	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:506:9:BSP_QSPI_GetInfo	16	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:530:9:BSP_QSPI_EnableMemoryMappedMode	72	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:583:13:BSP_QSPI_MspInit	64	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:649:13:BSP_QSPI_MspDeInit	16	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:677:16:QSPI_ResetMemory	72	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:720:16:QSPI_DummyCyclesCfg	88	static,ignoring_inline_asm
+../myDrivers/Src/stm32746g_discovery_qspi.c:780:16:QSPI_WriteEnable	96	static
+../myDrivers/Src/stm32746g_discovery_qspi.c:831:16:QSPI_AutoPollingMemReady	96	static

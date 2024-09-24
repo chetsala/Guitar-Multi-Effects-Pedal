@@ -1,0 +1,2 @@
+../Core/Src/display_init.c:15:6:Display_Init	1
+../Core/Src/display_init.c:31:6:Display_Draw_Text	1

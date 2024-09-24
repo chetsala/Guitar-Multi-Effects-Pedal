@@ -1,0 +1,3 @@
+../Core/Src/guitar_audio_init.c:35:10:Audio_Peripheral_Init	1
+../Core/Src/guitar_audio_init.c:73:6:Process_Audio	6
+../Core/Src/guitar_audio_init.c:143:6:Signal_Processing	2
