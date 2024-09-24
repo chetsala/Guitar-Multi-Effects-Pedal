@@ -1,3 +1,2 @@
-../Core/Src/guitar_audio_init.c:35:10:Audio_Peripheral_Init	24	static
-../Core/Src/guitar_audio_init.c:73:6:Process_Audio	8	static
-../Core/Src/guitar_audio_init.c:143:6:Signal_Processing	32	static
+../Core/Src/guitar_audio_init.c:28:10:Audio_Peripheral_Init	16	static
+../Core/Src/guitar_audio_init.c:52:6:Signal_Processing	32	static
