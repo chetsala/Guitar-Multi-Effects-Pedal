@@ -123,7 +123,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
  // Display_Init();
 
-  Audio_Peripheral_Init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
