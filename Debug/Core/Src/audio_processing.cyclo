@@ -1,0 +1,2 @@
+../Core/Src/audio_processing.c:77:13:fill_buffer_with_square_wave	3
+../Core/Src/audio_processing.c:99:6:Multieffect	4

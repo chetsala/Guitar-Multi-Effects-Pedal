@@ -33,7 +33,6 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "display_init.h"
-#include "guitar_audio_init.h"
 #include "stm32f7xx_hal.h"
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_sdram.h"

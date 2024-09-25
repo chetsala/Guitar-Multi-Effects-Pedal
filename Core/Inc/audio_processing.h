@@ -10,4 +10,11 @@
 
 
 
+
+void Multieffect(void);
+
+
+
+
+
 #endif /* INC_AUDIO_PROCESSING_H_ */
