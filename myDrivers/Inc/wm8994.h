@@ -40,7 +40,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "audio.h"
-
+#include "stm32746g_discovery.h"
 /** @addtogroup BSP
   * @{
   */ 

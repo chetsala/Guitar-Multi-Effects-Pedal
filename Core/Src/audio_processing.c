@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 
-#define MY_BUFFER_SIZE_SAMPLES 3600   // 1024
+#define MY_BUFFER_SIZE_SAMPLES 1024   // 1024
 #define MY_DMA_BYTES_PER_FRAME 8
 #define MY_DMA_BYTES_PER_MSIZE 2
 #define MY_DMA_BUFFER_SIZE_BYTES MY_BUFFER_SIZE_SAMPLES * MY_DMA_BYTES_PER_FRAME
@@ -67,9 +67,8 @@ static int16_t playbackBuffer[MY_BUFFER_SIZE_SAMPLES];
 static uint8_t saiDMATransmitBuffer[MY_DMA_BUFFER_SIZE_BYTES];
 static uint32_t frequency = AUDIO_FREQUENCY_48K;
 static uint8_t volume = 100;
-uint32_t  audio_rec_buffer_state;
 
-extern SAI_HandleTypeDef		haudio_out_sai;
+
 
 
 
@@ -78,10 +77,10 @@ static void fill_buffer_with_square_wave(int16_t * buf, uint32_t num_samples)
 {
 	// Fill up a 100Hz square wave
 	//48khz sample rate --> 480 samples in 100 hz --> toggle every 240 samples
-	int toggle_period = 240;
+	int toggle_period = 480;
 	int count = 0;
 	int wave_state = 1;
-	int magnitude = 30000;
+	int magnitude = 33000;
 
 	for(int i = 0; i < num_samples; i++){
 
@@ -109,29 +108,29 @@ void Multieffect(void)
 	  }
 	  fill_buffer_with_square_wave(playbackBuffer, MY_BUFFER_SIZE_SAMPLES);
 	  BSP_AUDIO_OUT_SetAudioFrameSlot(SAI_SLOTACTIVE_0);
-	  BSP_AUDIO_OUT_Play((uint16_t*)AUDIO_BUFFER_OUT, AUDIO_BLOCK_SIZE * 2);
+	  BSP_AUDIO_OUT_Play(&playbackBuffer, AUDIO_BLOCK_SIZE * 2);
 
 
-	 		 while (1)
-	 	  {
-	 	    while(audio_rec_buffer_state != BUFFER_OFFSET_HALF)
-	 	    {
-	 				HAL_Delay(1);
-	 	    }
-	 	    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-
-	 	    memcpy((uint16_t *)(AUDIO_BUFFER_OUT),
-	 	           (uint16_t *)(AUDIO_BUFFER_IN),
-	 	           AUDIO_BLOCK_SIZE);
-
-	 	    while(audio_rec_buffer_state != BUFFER_OFFSET_FULL)
-	 	    {
-	 				HAL_Delay(1);
-	 	    }
-	 	    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-	 	    memcpy((uint16_t *)(AUDIO_BUFFER_OUT + (AUDIO_BLOCK_SIZE)),
-	 	           (uint16_t *)(AUDIO_BUFFER_IN + (AUDIO_BLOCK_SIZE)),
-	 	           AUDIO_BLOCK_SIZE);
+//	 		 while (1)
+//	 	  {
+//	 	    while(audio_rec_buffer_state != BUFFER_OFFSET_HALF)
+//	 	    {
+//	 				HAL_Delay(1);
+//	 	    }
+//	 	    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+//
+//	 	    memcpy((uint16_t *)(AUDIO_BUFFER_OUT),
+//	 	           (uint16_t *)(AUDIO_BUFFER_IN),
+//	 	           AUDIO_BLOCK_SIZE);
+//
+//	 	    while(audio_rec_buffer_state != BUFFER_OFFSET_FULL)
+//	 	    {
+//	 				HAL_Delay(1);
+//	 	    }
+//	 	    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+//	 	    memcpy((uint16_t *)(AUDIO_BUFFER_OUT + (AUDIO_BLOCK_SIZE)),
+//	 	           (uint16_t *)(AUDIO_BUFFER_IN + (AUDIO_BLOCK_SIZE)),
+//	 	           AUDIO_BLOCK_SIZE);
 
 	/*   Initialization of SDRAM buffers
 	  memset((uint16_t*)AUDIO_BUFFER_IN, 0, AUDIO_BLOCK_SIZE*2);
@@ -171,6 +170,6 @@ void Multieffect(void)
 
 	  }*/
 	}
-	}
+
 
 

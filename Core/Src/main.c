@@ -15,6 +15,26 @@
   *
   ******************************************************************************
   */
+
+
+/* Pseudocode:
+ *
+ *  Set up buffers:
+ *
+ *  N = 1024
+ *
+ *  CODEC ADC -->  SAI2B (SAI receiving subblock) -> input_buffer[N/4] (16 bit), x_in_temp[N] (32 bit float conversion), x_in[N] input signal block, (DSP happens here), x_out_temp[2*N] circular buffer of output signal, output_buffer[N/4] (16 bit) --> SAI2A (SAI transmitting subblock) --> CODEC DAC
+ *
+ * Initialize audio input and audio output lines on audio CODEC. Use BSP_AUDIO_OUT_Init and BSP_AUDIO_IN_InitEx function and the following audio devices:  INPUT_DEVICE_INPUT_LINE_1 , OUTPUT_DEVICE_HEADPHONE
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -22,15 +42,30 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stm32f7xx_hal.h"
+#include "wm8994.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define BUFFER_SIZE  1024
+
+// Define the SAI handles
+SAI_HandleTypeDef hsai_Out;
+SAI_HandleTypeDef hsai_In;
+
+// DMA handle
+DMA_HandleTypeDef hdma_sai_rx;
+DMA_HandleTypeDef hdma_sai_tx;
 
 /* USER CODE END PD */
 
@@ -42,6 +77,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 DMA2D_HandleTypeDef hdma2d;
+
+I2C_HandleTypeDef hi2c3;
 
 LTDC_HandleTypeDef hltdc;
 
@@ -57,6 +94,10 @@ UART_HandleTypeDef huart1;
 SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN PV */
+extern SAI_HandleTypeDef haudio_out_sai, haudio_in_sai;
+
+int16_t input_buffer[BUFFER_SIZE];
+int16_t output_buffer[BUFFER_SIZE];
 
 /* USER CODE END PV */
 
@@ -71,7 +112,16 @@ static void MX_TIM1_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_LTDC_Init(void);
 static void MX_FMC_Init(void);
+static void MX_I2C3_Init(void);
 /* USER CODE BEGIN PFP */
+
+void Audio_Process(void);
+static HAL_StatusTypeDef I2Cx_ReadMultiple(I2C_HandleTypeDef *i2c_handler,
+                                           uint8_t Addr,
+                                           uint16_t Reg,
+                                           uint16_t MemAddress,
+                                           uint8_t *Buffer,
+                                           uint16_t Length);
 
 /* USER CODE END PFP */
 
@@ -120,9 +170,42 @@ int main(void)
   MX_DMA2D_Init();
   MX_LTDC_Init();
   MX_FMC_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
-   Display_Init();
 
+  Display_Init();
+
+
+
+
+  wm8994_Reset(AUDIO_I2C_ADDRESS);
+
+  if (wm8994_Init(AUDIO_I2C_ADDRESS, INPUT_DEVICE_INPUT_LINE_1 | OUTPUT_DEVICE_HEADPHONE , 80, SAI_AUDIO_FREQUENCY_48K) == 0){
+	  Display_Draw_Text("Codec Initialized", 0, 20);
+  } else {
+	  Display_Draw_Text("Codec Initialized", 0, 20);
+  }
+
+
+  if (BSP_AUDIO_OUT_Play(output_buffer, BUFFER_SIZE / 4) == AUDIO_OK) {
+	  Display_Draw_Text("Codec is playing", 0, 40);
+  	}else {
+  	  Display_Draw_Text("Codec not playing", 0, 40);
+    }
+
+
+  if ( BSP_AUDIO_IN_Record(*input_buffer, BUFFER_SIZE / 4) == AUDIO_OK) {
+	  Display_Draw_Text("Codec is recording", 0, 60);
+  	}else {
+  	  Display_Draw_Text("Codec is not recording", 0, 60);
+    }
+
+
+
+
+  // Start audio input (SAI Receive) and output (SAI Transmit) using DMA
+  HAL_SAI_Receive_DMA(&hsai_In, (uint8_t *)input_buffer, BUFFER_SIZE);
+  HAL_SAI_Transmit_DMA(&hsai_Out, (uint8_t *)output_buffer, BUFFER_SIZE);
 
   /* USER CODE END 2 */
 
@@ -130,7 +213,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Multieffect();
+	  Audio_Process();
 
     /* USER CODE END WHILE */
 
@@ -253,6 +336,54 @@ static void MX_DMA2D_Init(void)
   /* USER CODE BEGIN DMA2D_Init 2 */
 
   /* USER CODE END DMA2D_Init 2 */
+
+}
+
+/**
+  * @brief I2C3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C3_Init(void)
+{
+
+  /* USER CODE BEGIN I2C3_Init 0 */
+
+  /* USER CODE END I2C3_Init 0 */
+
+  /* USER CODE BEGIN I2C3_Init 1 */
+
+  /* USER CODE END I2C3_Init 1 */
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x00C0EAFF;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C3_Init 2 */
+
+  /* USER CODE END I2C3_Init 2 */
 
 }
 
@@ -589,6 +720,19 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void Audio_Process(void) {
+
+    // Example: Copy input buffer to output buffer for basic loopback
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+        output_buffer[i] = input_buffer[i];
+    }
+
+
+}
+
+
+
 
 /* USER CODE END 4 */
 
