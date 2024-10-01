@@ -1,9 +1,9 @@
 Core/Src/display_init.o: ../Core/Src/display_init.c \
  ../Core/Inc/display_init.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_lcd.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_lcd.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
  C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
@@ -40,30 +40,30 @@ Core/Src/display_init.o: ../Core/Src/display_init.c \
  C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myUtilities/Fonts/fonts.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_ltdc.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_dma2d.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myUtilities/Fonts/fonts.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_ltdc.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_dma2d.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h \
  ../Core/Inc/main.h ../Core/Inc/display_init.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_ts.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ft5336.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ts.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_audio.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/wm8994.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/audio.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_i2s.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_def.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sd.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_ll_sdmmc.h \
- C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_sd.h
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_ts.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ft5336.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ts.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_audio.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/wm8994.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/audio.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_i2s.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_def.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sd.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_ll_sdmmc.h \
+ C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_sd.h
 ../Core/Inc/display_init.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_lcd.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_lcd.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
 C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
@@ -100,23 +100,23 @@ C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL
 C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 C:/Users/Chet/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.2/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myUtilities/Fonts/fonts.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_ltdc.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_dma2d.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myUtilities/Fonts/fonts.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_ltdc.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_dma2d.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/rk043fn48h.h:
 ../Core/Inc/main.h:
 ../Core/Inc/display_init.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_ts.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ft5336.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ts.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_audio.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/wm8994.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/audio.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_i2s.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_def.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sd.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_ll_sdmmc.h:
-C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_sd.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sdram.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_ts.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ft5336.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/ts.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_audio.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/wm8994.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/audio.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_i2s.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_def.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32746g_discovery_sd.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_ll_sdmmc.h:
+C:/Users/Chet/Desktop/Guitar_Multi_Effects_Pedal/Guitar-Multi-Effects-Pedal/Guitar-Multi-Effects-Pedal/myDrivers/Inc/stm32f7xx_hal_sd.h:

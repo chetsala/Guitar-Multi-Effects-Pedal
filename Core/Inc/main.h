@@ -56,7 +56,8 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#define INT16_TO_FLOAT(value) ( (1.0f / 32768.0f) * (value) )
+#define FLOAT_TO_INT16(value) ( (int16_t)((value) * 32768.0f) )
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
@@ -79,6 +80,11 @@ void Error_Handler(void);
 #define SDRAM_WRITE_READ_ADDR        ((uint32_t)(CAMERA_FRAME_BUFFER + (CAMERA_RES_MAX_X * CAMERA_RES_MAX_Y * RGB565_BYTE_PER_PIXEL)))
 
 #define SDRAM_WRITE_READ_ADDR_OFFSET ((uint32_t)0x0800);
+
+#define AUDIO_BLOCK_SIZE             ((uint32_t)512)
+#define AUDIO_BLOCK_HALFSIZE         ((uint32_t)256)
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -21,7 +21,7 @@
  *
  *  Set up buffers:
  *
- *  N = 1024
+ *
  *
  *  CODEC ADC -->  SAI2B (SAI receiving subblock) -> input_buffer[N/4] (16 bit), x_in_temp[N] (32 bit float conversion), x_in[N] input signal block, (DSP happens here), x_out_temp[2*N] circular buffer of output signal, output_buffer[N/4] (16 bit) --> SAI2A (SAI transmitting subblock) --> CODEC DAC
  *
@@ -29,7 +29,7 @@
  *
  *
  *
- *
+ *Buffer Size (bytes)=Number of Samples×Number of Channels×Bytes per Sample
  *
  *
  *
@@ -44,6 +44,8 @@
 
 #include "stm32f7xx_hal.h"
 #include "wm8994.h"
+#include "stm32746g_discovery_audio.h"
+#include <string.h>
 
 
 /* USER CODE END Includes */
@@ -57,7 +59,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define BUFFER_SIZE  1024
+#define BUFFER_SIZE  512
 
 // Define the SAI handles
 SAI_HandleTypeDef hsai_Out;
@@ -96,8 +98,18 @@ SDRAM_HandleTypeDef hsdram1;
 /* USER CODE BEGIN PV */
 extern SAI_HandleTypeDef haudio_out_sai, haudio_in_sai;
 
-int16_t input_buffer[BUFFER_SIZE];
-int16_t output_buffer[BUFFER_SIZE];
+int16_t input_data[BUFFER_SIZE];
+int16_t processed_data[BUFFER_SIZE];
+int16_t output_data[BUFFER_SIZE];
+
+static volatile int16_t *inBufPtr;
+static volatile int16_t *procBufPtr = &processed_data[0];
+static volatile int16_t *outBufPtr = &output_data[0];
+
+
+
+
+uint8_t dataReadyFlag;
 
 /* USER CODE END PV */
 
@@ -115,18 +127,38 @@ static void MX_FMC_Init(void);
 static void MX_I2C3_Init(void);
 /* USER CODE BEGIN PFP */
 
-void Audio_Process(void);
-static HAL_StatusTypeDef I2Cx_ReadMultiple(I2C_HandleTypeDef *i2c_handler,
-                                           uint8_t Addr,
-                                           uint16_t Reg,
-                                           uint16_t MemAddress,
-                                           uint8_t *Buffer,
-                                           uint16_t Length);
+void processData(int16_t *inBufPtr, int16_t *outBufPtr, uint16_t size);
+static void fill_buffer_with_square_wave(int16_t *buf, uint32_t num_samples);
+
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void BSP_AUDIO_IN_HalfTransfer_CallBack()
+{
+	// Process the first half of the input buffer
+		processData(&input_data[0], &processed_data[0], BUFFER_SIZE / 2);
+		dataReadyFlag = 1;
+}
+
+void BSP_AUDIO_IN_TransferComplete_CallBack()
+{
+	processData(&input_data[BUFFER_SIZE / 2], &processed_data[BUFFER_SIZE / 2], BUFFER_SIZE / 2);
+	dataReadyFlag = 1;
+}
+
+void BSP_AUDIO_OUT_HalfTransfer_CallBack()
+{
+	memcpy(&output_data[0], &processed_data[0], BUFFER_SIZE / 2 * sizeof(int16_t));
+}
+
+void BSP_AUDIO_OUT_TransferComplete_CallBack()
+{
+	memcpy(&output_data[BUFFER_SIZE / 2], &processed_data[BUFFER_SIZE / 2], BUFFER_SIZE / 2 * sizeof(int16_t));
+}
+
+
 
 /* USER CODE END 0 */
 
@@ -159,6 +191,9 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
+
+
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -172,40 +207,40 @@ int main(void)
   MX_FMC_Init();
   MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
-
   Display_Init();
+  if (wm8994_Init(AUDIO_I2C_ADDRESS, INPUT_DEVICE_INPUT_LINE_1 | OUTPUT_DEVICE_HEADPHONE , 80, SAI_AUDIO_FREQUENCY_48K)==0)
+  {
+	  Display_Draw_Text("Codec initialized", 0, 10);
+  }
+  HAL_Delay(50);
+  // Start audio input (SAI Receive) and output (SAI Transmit) using DMA
+ // HAL_StatusTypeDef statusTx = HAL_SAI_Transmit_DMA(&hsai_BlockA2, (uint8_t *)output_data, BUFFER_SIZE);
+ // HAL_StatusTypeDef statusRx = HAL_SAI_Receive_DMA(&hsai_BlockB2, (uint8_t *)input_data, BUFFER_SIZE);
+
+   //Display_Draw_Text("Codec is not recording", 0, 60);
 
 
 
+ /* if (HAL_SAI_Receive_DMA(&hsai_BlockB2, (uint8_t *)input_data, BUFFER_SIZE) == HAL_OK)
+  {
+	  Display_Draw_Text("SAI Recieve Setup", 0, 30);
+  }
+  else{
+	  Display_Draw_Text("SAI Recieve Not Setup", 0, 30);
+  }
+*/
 
-  wm8994_Reset(AUDIO_I2C_ADDRESS);
-
-  if (wm8994_Init(AUDIO_I2C_ADDRESS, INPUT_DEVICE_INPUT_LINE_1 | OUTPUT_DEVICE_HEADPHONE , 80, SAI_AUDIO_FREQUENCY_48K) == 0){
-	  Display_Draw_Text("Codec Initialized", 0, 20);
-  } else {
-	  Display_Draw_Text("Codec Initialized", 0, 20);
+  if (HAL_SAI_Transmit_DMA(&hsai_BlockA2, (uint8_t *)output_data, BUFFER_SIZE) == HAL_OK)
+  {
+	  Display_Draw_Text("SAI Transmit Setup", 0, 50);
+  }
+  else{
+	  Display_Draw_Text("SAI Transmit Not Setup", 0, 50);
   }
 
+  dataReadyFlag = 0;
 
-  if (BSP_AUDIO_OUT_Play(output_buffer, BUFFER_SIZE / 4) == AUDIO_OK) {
-	  Display_Draw_Text("Codec is playing", 0, 40);
-  	}else {
-  	  Display_Draw_Text("Codec not playing", 0, 40);
-    }
-
-
-  if ( BSP_AUDIO_IN_Record(*input_buffer, BUFFER_SIZE / 4) == AUDIO_OK) {
-	  Display_Draw_Text("Codec is recording", 0, 60);
-  	}else {
-  	  Display_Draw_Text("Codec is not recording", 0, 60);
-    }
-
-
-
-
-  // Start audio input (SAI Receive) and output (SAI Transmit) using DMA
-  HAL_SAI_Receive_DMA(&hsai_In, (uint8_t *)input_buffer, BUFFER_SIZE);
-  HAL_SAI_Transmit_DMA(&hsai_Out, (uint8_t *)output_buffer, BUFFER_SIZE);
+  fill_buffer_with_square_wave(input_data, BUFFER_SIZE);
 
   /* USER CODE END 2 */
 
@@ -213,7 +248,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Audio_Process();
+	  if (dataReadyFlag){
+
+		  // Reset the flag after processing
+	dataReadyFlag = 0;
+
+	  }
 
     /* USER CODE END WHILE */
 
@@ -291,7 +331,7 @@ void PeriphCommonClock_Config(void)
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_SAI2;
   PeriphClkInitStruct.PLLSAI.PLLSAIN = 384;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
-  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 2;
+  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 8;
   PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV2;
   PeriphClkInitStruct.PLLSAIDivQ = 1;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_8;
@@ -487,19 +527,19 @@ static void MX_SAI2_Init(void)
   hsai_BlockA2.Instance = SAI2_Block_A;
   hsai_BlockA2.Init.Protocol = SAI_FREE_PROTOCOL;
   hsai_BlockA2.Init.AudioMode = SAI_MODEMASTER_TX;
-  hsai_BlockA2.Init.DataSize = SAI_DATASIZE_8;
+  hsai_BlockA2.Init.DataSize = SAI_DATASIZE_16;
   hsai_BlockA2.Init.FirstBit = SAI_FIRSTBIT_MSB;
   hsai_BlockA2.Init.ClockStrobing = SAI_CLOCKSTROBING_FALLINGEDGE;
   hsai_BlockA2.Init.Synchro = SAI_ASYNCHRONOUS;
   hsai_BlockA2.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
   hsai_BlockA2.Init.NoDivider = SAI_MASTERDIVIDER_ENABLE;
   hsai_BlockA2.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_EMPTY;
-  hsai_BlockA2.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_192K;
+  hsai_BlockA2.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_48K;
   hsai_BlockA2.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
   hsai_BlockA2.Init.MonoStereoMode = SAI_STEREOMODE;
   hsai_BlockA2.Init.CompandingMode = SAI_NOCOMPANDING;
   hsai_BlockA2.Init.TriState = SAI_OUTPUT_NOTRELEASED;
-  hsai_BlockA2.FrameInit.FrameLength = 8;
+  hsai_BlockA2.FrameInit.FrameLength = 32;
   hsai_BlockA2.FrameInit.ActiveFrameLength = 1;
   hsai_BlockA2.FrameInit.FSDefinition = SAI_FS_STARTFRAME;
   hsai_BlockA2.FrameInit.FSPolarity = SAI_FS_ACTIVE_LOW;
@@ -515,7 +555,7 @@ static void MX_SAI2_Init(void)
   hsai_BlockB2.Instance = SAI2_Block_B;
   hsai_BlockB2.Init.Protocol = SAI_FREE_PROTOCOL;
   hsai_BlockB2.Init.AudioMode = SAI_MODESLAVE_RX;
-  hsai_BlockB2.Init.DataSize = SAI_DATASIZE_8;
+  hsai_BlockB2.Init.DataSize = SAI_DATASIZE_16;
   hsai_BlockB2.Init.FirstBit = SAI_FIRSTBIT_MSB;
   hsai_BlockB2.Init.ClockStrobing = SAI_CLOCKSTROBING_FALLINGEDGE;
   hsai_BlockB2.Init.Synchro = SAI_SYNCHRONOUS;
@@ -525,7 +565,7 @@ static void MX_SAI2_Init(void)
   hsai_BlockB2.Init.MonoStereoMode = SAI_STEREOMODE;
   hsai_BlockB2.Init.CompandingMode = SAI_NOCOMPANDING;
   hsai_BlockB2.Init.TriState = SAI_OUTPUT_NOTRELEASED;
-  hsai_BlockB2.FrameInit.FrameLength = 8;
+  hsai_BlockB2.FrameInit.FrameLength = 32;
   hsai_BlockB2.FrameInit.ActiveFrameLength = 1;
   hsai_BlockB2.FrameInit.FSDefinition = SAI_FS_STARTFRAME;
   hsai_BlockB2.FrameInit.FSPolarity = SAI_FS_ACTIVE_LOW;
@@ -721,14 +761,66 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void Audio_Process(void) {
+void processData(int16_t *inBufPtr, int16_t *outBufPtr, uint16_t size) {
+    static float leftIn, leftOut;
+    static float rightIn, rightOut;
 
-    // Example: Copy input buffer to output buffer for basic loopback
-    for (int i = 0; i < BUFFER_SIZE; i++) {
-        output_buffer[i] = input_buffer[i];
+    // Loop through the buffer for stereo channels (left and right)
+    for (uint16_t n = 0; n < size; n += 2) {
+
+        // --- Left Channel Processing ---
+
+        // Get ADC input for left channel and convert to float
+    	leftIn = INT16_TO_FLOAT(inBufPtr[n]);
+        if (leftIn > 1.0f) {
+            leftIn -= 2.0f;  // Example of processing, could be customized
+        }
+
+        // Compute new output sample for left channel
+        leftOut = leftIn; // Example: no processing, just pass-through
+
+        // Convert float back to signed int and set output buffer for DAC
+        outBufPtr[n] = FLOAT_TO_INT16(leftOut);
+
+        // --- Right Channel Processing ---
+
+        // Get ADC input for right channel and convert to float
+        rightIn = INT16_TO_FLOAT(inBufPtr[n + 1]);
+        if (rightIn > 1.0f) {
+            rightIn -= 2.0f;  // Example of processing, could be customized
+        }
+
+        // Compute new output sample for right channel
+        rightOut = rightIn; // Example: no processing, just pass-through
+
+        // Convert float back to signed int and set output buffer for DAC
+        outBufPtr[n + 1] = FLOAT_TO_INT16(rightOut);
     }
 
+    dataReadyFlag = 0;
+}
 
+static void fill_buffer_with_square_wave(int16_t *buf, uint32_t num_samples)
+{
+    // Fill up a 100 Hz square wave
+    // 48 kHz sample rate -> 480 samples in 100 Hz -> toggle every 240 samples
+    int toggle_period = 240;
+    int count = 0;
+    int wave_state = 1;
+    int magnitude = 30000;
+
+    for (int i = 0; i < num_samples; i++)
+    {
+        // Set the buffer value based on the wave state
+        buf[i] = magnitude * wave_state;
+
+        count++;
+        if (count >= toggle_period)
+        {
+            count = 0;
+            wave_state = wave_state * (-1);  // Toggle the wave state between 1 and -1
+        }
+    }
 }
 
 
