@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "main.h": "c",
+        "stm32f7xx_hal.h": "c",
+        "stm32f7xx_hal_conf.h": "c",
+        "display_init.h": "c",
+        "stm32746g_discovery_audio.h": "c",
+        "audio_init.h": "c",
+        "stm32746g_discovery_lcd.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
+}

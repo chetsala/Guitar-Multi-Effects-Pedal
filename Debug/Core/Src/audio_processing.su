@@ -1,2 +1,0 @@
-../Core/Src/audio_processing.c:76:13:fill_buffer_with_square_wave	40	static
-../Core/Src/audio_processing.c:98:6:Multieffect	8	static
