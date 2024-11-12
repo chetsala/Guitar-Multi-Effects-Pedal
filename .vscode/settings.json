@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stm32f7xx_hal.h": "c",
+        "stm32f7xx.h": "c",
+        "main.h": "c",
+        "stdint.h": "c",
+        "stdbool.h": "c",
+        "stdlib.h": "c"
+    }
+}

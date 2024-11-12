@@ -1,0 +1,69 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Multi-Effects-Pedal",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Multi-Effects-Pedal::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Multi-Effects-Pedal-Debug-59e31c42c49a81a730b3.json",
+					"name" : "Multi-Effects-Pedal",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Multi-Effects-Pedal.elf::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Multi-Effects-Pedal.elf-Debug-67ebf04013ce1b4ade9b.json",
+					"name" : "Multi-Effects-Pedal.elf",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal/build/debug",
+		"source" : "C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

@@ -1,0 +1,4 @@
+C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal/build/debug/CMakeFiles/Multi-Effects-Pedal.dir
+C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal/build/debug/CMakeFiles/Multi-Effects-Pedal.elf.dir
+C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal/build/debug/CMakeFiles/edit_cache.dir
+C:/Users/Chet/Desktop/Multi-Effects-Pedal/Multi-Effects-Pedal/build/debug/CMakeFiles/rebuild_cache.dir
