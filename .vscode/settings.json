@@ -5,6 +5,9 @@
         "main.h": "c",
         "stdint.h": "c",
         "stdbool.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "compare": "c",
+        "limits": "c",
+        "new": "c"
     }
 }
