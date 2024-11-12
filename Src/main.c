@@ -75,8 +75,8 @@ typedef enum
     BUFFER_OFFSET_HALF = 2,
     BUFFER_OFFSET_FULL = 3,
     SCREEN_REFRESH = 4,
-    INICIAR_GRABACION = 5,
-    GRABACION_TERMINADA = 6
+    START_RECORDING = 5,
+    RECORDING_DONE = 6
 } machine_states_t;
 
 /* Private variables ---------------------------------------------------------*/
@@ -149,13 +149,13 @@ int main(void)
 
         case BUFFER_OFFSET_HALF:
         {
-            memcpy(Buffer_cuentas, Buffer_in, AUDIO_BLOCK_HALFSIZE * sizeof(int32_t));
+            memcpy(processed_buffer, Buffer_in, AUDIO_BLOCK_HALFSIZE * sizeof(int32_t));
 
             for (sample_count = 1; sample_count < AUDIO_BLOCK_HALFSIZE; sample_count += 2)
             {
-                if ((Buffer_cuentas[sample_count] & 0x800000) == 0x800000)
+                if ((processed_buffer[sample_count] & 0x800000) == 0x800000)
                 {
-                    Buffer_cuentas[sample_count] = ((~Buffer_cuentas[sample_count] + 1) & 0xFFFFFF) * -1;
+                    processed_buffer[sample_count] = ((~processed_buffer[sample_count] + 1) & 0xFFFFFF) * -1;
                 }
 
                 for (cont_pedales = 11; cont_pedales >= 0; cont_pedales--)
@@ -163,12 +163,12 @@ int main(void)
 
                     if ((Pedales[cont_pedales])->push->push_state == GUI_ON)
                     {
-                        Buffer_cuentas[sample_count] = Pedales[cont_pedales]->efecto(Buffer_cuentas[sample_count]);
+                        processed_buffer[sample_count] = Pedales[cont_pedales]->efecto(processed_buffer[sample_count]);
                     }
 
                 }
 
-                if (Buffer_cuentas[sample_count] < 0)
+                if (processed_buffer[sample_count] < 0)
                 {
                     if (estado_grabacion == true)
                     {
@@ -180,7 +180,7 @@ int main(void)
                         offset_grabacion++;
                     }
 
-                    Buffer_cuentas[sample_count] = (~((-1 * Buffer_cuentas[sample_count]) - 1)) & 0xFFFFFF;
+                    processed_buffer[sample_count] = (~((-1 * processed_buffer[sample_count]) - 1)) & 0xFFFFFF;
                 }
                 else
                 {
@@ -195,7 +195,7 @@ int main(void)
                     }
                 }
             }
-            memcpy(Buffer_out, Buffer_cuentas, AUDIO_BLOCK_HALFSIZE * sizeof(int32_t));
+            memcpy(Buffer_out, processed_buffer, AUDIO_BLOCK_HALFSIZE * sizeof(int32_t));
             if (machine_state == SCREEN_REFRESH)
             {
                 break;
