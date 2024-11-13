@@ -42,6 +42,7 @@ set(sources_SRCS
     ${PROJECT_SOURCE_DIR}/Src/ui_interface.c
     ${PROJECT_SOURCE_DIR}/Src/system_stm32f7xx.c
     ${PROJECT_SOURCE_DIR}/Src/stm32f7xx_it.c
+    ${PROJECT_SOURCE_DIR}/Src/fatfs_storage.c
     ${PROJECT_SOURCE_DIR}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.c
     ${PROJECT_SOURCE_DIR}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.c
     ${PROJECT_SOURCE_DIR}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c

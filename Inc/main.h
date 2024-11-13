@@ -7,6 +7,28 @@
 
 /* Macros---------------------------------------------------------------------*/
 
+
+#define DELAY          0
+#define OCTAVE         1
+#define CHORUS         2
+#define PHASER         3
+#define WAH            4
+#define REVERB         5
+#define DISTORSION     6
+#define FLANGER        7
+#define TREMOLO        8
+#define VIBRATO        9
+#define EQ             10
+#define RINGMOD        11
+#define LEFT           0
+#define MENU_1         14
+#define MENU_2         15
+#define RIGHT          1
+#define HOME           2
+#define LEFT_MENU      16
+#define RIGHT_MENU     17
+
+
 #define RGB565_BYTE_PER_PIXEL        2
 #define ARBG8888_BYTE_PER_PIXEL      4
 
@@ -103,10 +125,11 @@ void BSP_LCD_DMA2D_IRQHandler(void);
 
 /* Board Support Package (BSP) */
 #include "stm32746g_discovery.h"
+#include "fatfs_storage.h"
 
 
 /* Custom Drivers */
-#include "gui.h"
+#include "ui_interface.h"
 
 /* Function prototypes */
 void SystemClock_Config(void);

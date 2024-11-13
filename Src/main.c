@@ -113,7 +113,7 @@ int main(void)
     initWavHeader(AUDIO_RECORD_BUFFER); // Initialize WAV header in the audio record buffer
 
     sd_write_position = (DEFAULT_AUDIO_IN_FREQ * 3 * RECORDING_DURATION_SECONDS) / SD_WRITE_BLOCK_SIZE;
-
+    InitializeDemoScreen();
     while (1)
     {
         switch (machine_state)
@@ -146,7 +146,6 @@ int main(void)
             break;
         }
 
-
         case BUFFER_OFFSET_HALF:
         {
             memcpy(processed_buffer, Buffer_in, AUDIO_BLOCK_HALFSIZE * sizeof(int32_t));
@@ -165,7 +164,6 @@ int main(void)
                     {
                         processed_buffer[sample_count] = selection_pedal[pedal_count]->efecto(processed_buffer[sample_count]);
                     }
-
                 }
 
                 if (processed_buffer[sample_count] < 0)
@@ -298,7 +296,7 @@ int main(void)
                 }
 
                 handleIndividualPushButton(selection_pedal[selection_pedal], &touchState);
-                linkRequestHandlers_pedal_individual(selection_pedal[selection_pedal], &touchState);   // stopped here
+                linkRequestHandlers_pedal_individual(selection_pedal[selection_pedal], &touchState); // stopped here
             }
             else if (pedal_individual == 0)
             {
