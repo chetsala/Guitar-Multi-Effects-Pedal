@@ -158,40 +158,40 @@ int main(void)
                     processed_buffer[sample_count] = ((~processed_buffer[sample_count] + 1) & 0xFFFFFF) * -1;
                 }
 
-                for (cont_pedales = 11; cont_pedales >= 0; cont_pedales--)
+                for (pedal_count = 11; pedal_count >= 0; pedal_count--)
                 {
 
-                    if ((Pedales[cont_pedales])->push->push_state == GUI_ON)
+                    if ((selection_pedal[pedal_count])->push->push_state == GUI_ON)
                     {
-                        processed_buffer[sample_count] = Pedales[cont_pedales]->efecto(processed_buffer[sample_count]);
+                        processed_buffer[sample_count] = selection_pedal[pedal_count]->efecto(processed_buffer[sample_count]);
                     }
 
                 }
 
                 if (processed_buffer[sample_count] < 0)
                 {
-                    if (estado_grabacion == true)
+                    if (recording_state == true)
                     {
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = processed_buffer[sample_count] & 0xFF;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
-                        offset_grabacion++;
+                        AUDIO_RECORD_BUFFER[recording_state] = processed_buffer[sample_count] & 0xFF;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
+                        recording_state++;
                     }
 
                     processed_buffer[sample_count] = (~((-1 * processed_buffer[sample_count]) - 1)) & 0xFFFFFF;
                 }
                 else
                 {
-                    if (estado_grabacion == true)
+                    if (recording_state == true)
                     {
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = processed_buffer[sample_count] & 0xFF;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
-                        offset_grabacion++;
+                        AUDIO_RECORD_BUFFER[recording_state] = processed_buffer[sample_count] & 0xFF;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
+                        recording_state++;
                     }
                 }
             }
@@ -220,40 +220,40 @@ int main(void)
                     processed_buffer[sample_count] = ((~processed_buffer[sample_count] + 1) & 0xFFFFFF) * -1;
                 }
 
-                for (cont_pedales = 11; cont_pedales >= 0; cont_pedales--)
+                for (pedal_count = 11; pedal_count >= 0; pedal_count--)
                 {
 #if SCREEN_ENABLE
-                    if ((Pedales[cont_pedales])->push->push_state == GUI_ON)
+                    if ((selection_pedal[pedal_count])->push->push_state == GUI_ON)
                     {
-                        processed_buffer[sample_count] = Pedales[cont_pedales]->efecto(processed_buffer[sample_count]);
+                        processed_buffer[sample_count] = selection_pedal[pedal_count]->efecto(processed_buffer[sample_count]);
                     }
 #endif
                 }
 
                 if (processed_buffer[sample_count] < 0)
                 {
-                    if (estado_grabacion == true)
+                    if (recording_state == true)
                     {
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = processed_buffer[sample_count] & 0xFF;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
-                        offset_grabacion++;
+                        AUDIO_RECORD_BUFFER[recording_state] = processed_buffer[sample_count] & 0xFF;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
+                        recording_state++;
                     }
 
                     processed_buffer[sample_count] = (~((-1 * processed_buffer[sample_count]) - 1)) & 0xFFFFFF;
                 }
                 else
                 {
-                    if (estado_grabacion == true)
+                    if (recording_state == true)
                     {
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = processed_buffer[sample_count] & 0xFF;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
-                        offset_grabacion++;
-                        AUDIO_RECORD_BUFFER[offset_grabacion] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
-                        offset_grabacion++;
+                        AUDIO_RECORD_BUFFER[recording_state] = processed_buffer[sample_count] & 0xFF;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 8)) >> 8;
+                        recording_state++;
+                        AUDIO_RECORD_BUFFER[recording_state] = (processed_buffer[sample_count] & (0xFF << 16)) >> 16;
+                        recording_state++;
                     }
                 }
             }
@@ -272,7 +272,6 @@ int main(void)
 
             break;
         }
-#endif /* if AUDIO_ENABLE */
 
 #if SCREEN_ENABLE
         case SCREEN_REFRESH:
@@ -293,25 +292,25 @@ int main(void)
 
             if (pedal_individual == 1)
             {
-                if ((Pedales[seleccion_pedal]->perilla->perillas[0]->id) != 8)
+                if ((selection_pedal[selection_pedal]->perilla->perillas[0]->id) != 8)
                 {
-                    guiUpdate(Pedales[seleccion_pedal]->perilla, &touchState);
+                    guiUpdate(selection_pedal[selection_pedal]->perilla, &touchState);
                 }
 
-                handlePushIndividualButton(Pedales[seleccion_pedal], &touchState);
-                linkRequestHandlers_pedal_individual(Pedales[seleccion_pedal], &touchState);
+                handleIndividualPushButton(selection_pedal[selection_pedal], &touchState);
+                linkRequestHandlers_pedal_individual(selection_pedal[selection_pedal], &touchState);   // stopped here
             }
             else if (pedal_individual == 0)
             {
-                PushRequestHandler_menu(Pedales, &touchState);
-                linkRequestHandler_menu(Pedales, &touchState);
+                PushRequestHandler_menu(selection_pedal, &touchState);
+                linkRequestHandler_menu(selection_pedal, &touchState);
                 linkRequestHandler_Flechas_Menu(Flecha_Menu_Izquierda, &touchState);
                 linkRequestHandler_Flechas_Menu(Flecha_Menu_Derecha, &touchState);
             }
 
             machine_state = NONE_STATE;
 
-            if (estado_grabacion == true)
+            if (recording_state == true)
             {
                 if (timer_grabacion < SEGUNDOS * 20)
                 { /* 5=1s (200ms) , *10(tim=100ms), *20(tim=100ms)	*/
@@ -319,15 +318,15 @@ int main(void)
                 }
                 else
                 {
-                    machine_state = GRABACION_TERMINADA;
+                    machine_state = RECORDING_DONE;
                     break;
                 }
             }
             else
             {
-                if (Pedales[12]->push->push_state == GUI_ON)
+                if (selection_pedal[12]->push->push_state == GUI_ON)
                 {
-                    machine_state = INICIAR_GRABACION;
+                    machine_state = START_RECORDING;
                     break;
                 }
             }
@@ -339,14 +338,14 @@ int main(void)
         }
 #endif /* if SCREEN_ENABLE */
 
-        case INICIAR_GRABACION:
+        case START_RECORDING:
         {
             NVIC_DisableIRQ((IRQn_Type)DMA2_Stream7_IRQn);
             NVIC_DisableIRQ(TIMx_IRQn);
             BSP_LED_On(LED1);
-            estado_grabacion = true;
+            recording_state = true;
             timer_grabacion = 0;
-            offset_grabacion = 44;
+            recording_state = 44;
             block_machine = false;
             MenuForceRedraw();
             machine_state = NONE_STATE;
@@ -355,7 +354,7 @@ int main(void)
             break;
         }
 
-        case GRABACION_TERMINADA:
+        case RECORDING_DONE:
         {
             NVIC_DisableIRQ((IRQn_Type)DMA2_Stream7_IRQn);
             NVIC_DisableIRQ(TIMx_IRQn);
@@ -386,16 +385,16 @@ int main(void)
 
             machine_state = NONE_STATE;
 
-            estado_grabacion = false;
+            recording_state = false;
             timer_grabacion = 0;
-            offset_grabacion = 0;
+            recording_state = 0;
             BSP_LED_Off(LED1);
 
             block_machine = false;
 
             BSP_AUDIO_OUT_SetVolume(CODEC_OUT_VOLUME);
 
-            Pedales[12]->push->push_state = GUI_OFF;
+            selection_pedal[12]->push->push_state = GUI_OFF;
             MenuForceRedraw();
 
             NVIC_EnableIRQ(TIMx_IRQn);

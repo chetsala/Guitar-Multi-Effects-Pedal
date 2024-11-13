@@ -8,6 +8,8 @@
         "stdlib.h": "c",
         "compare": "c",
         "limits": "c",
-        "new": "c"
+        "new": "c",
+        "stm32746g_discovery.h": "c",
+        "gui.h": "c"
     }
 }

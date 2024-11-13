@@ -105,6 +105,9 @@ void BSP_LCD_DMA2D_IRQHandler(void);
 #include "stm32746g_discovery.h"
 
 
+/* Custom Drivers */
+#include "gui.h"
+
 /* Function prototypes */
 void SystemClock_Config(void);
 void Error_Handler(void);
