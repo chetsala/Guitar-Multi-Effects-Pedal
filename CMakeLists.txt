@@ -112,6 +112,7 @@ set(include_DIRS
     ${PROJECT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Inc
     ${PROJECT_SOURCE_DIR}/Drivers/CMSIS/Include
     ${PROJECT_SOURCE_DIR}/Utilities/Fonts
+    ${PROJECT_SOURCE_DIR}/Drivers/GUI
 )
 
 # Include directories for each compiler

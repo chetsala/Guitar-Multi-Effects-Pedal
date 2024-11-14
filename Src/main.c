@@ -29,6 +29,9 @@
 /* SD Card and File Handling */
 char SD_Path[4];              /* SD card logical drive path */
 static uint32_t uwBmplen = 0; /* Length of BMP images for display */
+static uint8_t *uwInternelBuffer = (uint8_t *)(BMP_IMAGE_BUFFER);
+
+
 
 /* Touchscreen and Menu Navigation */
 TS_StateTypeDef rawTouchState;                                     /* Raw touch state from touch controller */
@@ -36,7 +39,7 @@ GUITouchState touchState;                                          /* Processed 
 volatile int32_t pedal_individual = 0;                             /* Indicates individual pedal mode */
 volatile int32_t selection_menu = MENU_1;                          /* Current menu selection */
 LinkElementMenu *Left_Menu_Arrow = NULL, *Right_Menu_Arrow = NULL; /* Menu arrows */
-volatile int32_t selection_pedal = 0;                              /* Selected pedal index */
+volatile int32_t selection_menu = 0;                              /* Selected pedal index */
 
 /* Timer Handle for GUI updates */
 TIM_HandleTypeDef htimx;

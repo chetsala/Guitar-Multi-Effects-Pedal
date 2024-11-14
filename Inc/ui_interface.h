@@ -138,10 +138,11 @@ typedef struct {
 } DialElement;
 
 typedef struct {
-    LinkElement *menuButton;
-    LinkElement *individualButton;
-    int buttonState;
-} PushElement;
+    LinkElement *push_menu;
+    LinkElement *push_indiv;
+    int push_state;
+}PushElement;
+
 
 typedef struct {
     LinkElement *leftArrow;
@@ -166,8 +167,9 @@ void leftArrowMenuRequestHandler(LinkElementMenu *button, GUITouchState *touch);
 void individualPedalRequestHandler(PedalElement *button, GUITouchState *touch);
 LinkElement * initPushLink(uint8_t name, uint16_t x, uint16_t y, uint16_t width, uint16_t height, GUICallbackLink cb, LinkHandler handler);
 LinkElementMenu * initPushLinkMenu(uint8_t name, uint16_t x, uint16_t y, uint16_t width, uint16_t height, GUICallbackLinkMenu cb, LinkHandlerMenu handler);
-DialElement * initDial(uint8_t num);
+DialElement * initKnob(uint8_t num);
 void initPedals(void);
+int grabar_wav(int enetrada);
 
 // Handlers
 void handleMenuPushButton(PedalElement *button, GUITouchState *touch);
