@@ -10,6 +10,8 @@
         "limits": "c",
         "new": "c",
         "stm32746g_discovery.h": "c",
-        "gui.h": "c"
+        "gui.h": "c",
+        "stm32f7xx_hal_sai.h": "c",
+        "fatfs_storage.h": "c"
     }
 }

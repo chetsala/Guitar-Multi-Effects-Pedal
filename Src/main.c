@@ -39,7 +39,7 @@ GUITouchState touchState;                                          /* Processed 
 volatile int32_t pedal_individual = 0;                             /* Indicates individual pedal mode */
 volatile int32_t selection_menu = MENU_1;                          /* Current menu selection */
 LinkElementMenu *Left_Menu_Arrow = NULL, *Right_Menu_Arrow = NULL; /* Menu arrows */
-volatile int32_t selection_menu = 0;                              /* Selected pedal index */
+volatile int32_t selection_pedal = 0;                              /* Selected pedal index */
 
 /* Timer Handle for GUI updates */
 TIM_HandleTypeDef htimx;
@@ -160,12 +160,12 @@ int main(void)
                     processed_buffer[sample_count] = ((~processed_buffer[sample_count] + 1) & 0xFFFFFF) * -1;
                 }
 
-                for (pedal_count = 11; pedal_count >= 0; pedal_count--)
+                for (effect_count = 11; effect_count >= 0; effect_count--)
                 {
 
-                    if ((selection_pedal[pedal_count])->push->push_state == GUI_ON)
+                    if ((selection_pedal[effect_count])->push->push_state == GUI_ON)
                     {
-                        processed_buffer[sample_count] = selection_pedal[pedal_count]->efecto(processed_buffer[sample_count]);
+                        processed_buffer[sample_count] = selection_pedal[effect_count]->effect(processed_buffer[sample_count]);
                     }
                 }
 
@@ -221,12 +221,12 @@ int main(void)
                     processed_buffer[sample_count] = ((~processed_buffer[sample_count] + 1) & 0xFFFFFF) * -1;
                 }
 
-                for (pedal_count = 11; pedal_count >= 0; pedal_count--)
+                for (effect_count = 11; effect_count >= 0; effect_count--)
                 {
 #if SCREEN_ENABLE
-                    if ((selection_pedal[pedal_count])->push->push_state == GUI_ON)
+                    if ((selection_pedal[effect_count])->push->push_state == GUI_ON)
                     {
-                        processed_buffer[sample_count] = selection_pedal[pedal_count]->efecto(processed_buffer[sample_count]);
+                        processed_buffer[sample_count] = selection_pedal[effect_count]->efecto(processed_buffer[sample_count]);
                     }
 #endif
                 }
@@ -293,20 +293,20 @@ int main(void)
 
             if (pedal_individual == 1)
             {
-                if ((selection_pedal[selection_pedal]->perilla->perillas[0]->id) != 8)
+                if ((pedal_effects[selection_pedal]->dial->dials[0]->id) != 8)
                 {
-                    guiUpdate(selection_pedal[selection_pedal]->perilla, &touchState);
+                    guiUpdate(pedal_effects[selection_pedal]->dial, &touchState);
                 }
 
-                handleIndividualPushButton(selection_pedal[selection_pedal], &touchState);
-                linkRequestHandlers_pedal_individual(selection_pedal[selection_pedal], &touchState); // stopped here
+                handleIndividualPushButton(pedal_effects[selection_pedal], &touchState);
+                linkRequestHandlers_pedal_individual(pedal_effects[selection_pedal], &touchState); // stopped here
             }
             else if (pedal_individual == 0)
             {
-                PushRequestHandler_menu(selection_pedal, &touchState);
-                linkRequestHandler_menu(selection_pedal, &touchState);
-                linkRequestHandler_Flechas_Menu(Flecha_Menu_Izquierda, &touchState);
-                linkRequestHandler_Flechas_Menu(Flecha_Menu_Derecha, &touchState);
+                PushRequestHandler_menu(pedal_effects, &touchState);
+                linkRequestHandler_menu(pedal_effects, &touchState);
+                linkRequestHandler_Flechas_Menu(Left_Menu_Arrow, &touchState);
+                linkRequestHandler_Flechas_Menu(Right_Menu_Arrow, &touchState);
             }
 
             machine_state = NONE_STATE;

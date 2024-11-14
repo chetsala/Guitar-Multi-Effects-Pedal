@@ -125,7 +125,10 @@ void BSP_LCD_DMA2D_IRQHandler(void);
 
 /* Board Support Package (BSP) */
 #include "stm32746g_discovery.h"
+#include "stm32746g_audio.h"
 #include "fatfs_storage.h"
+#include "diskio.h"
+#include "ff.h"
 
 
 /* Custom Drivers */
